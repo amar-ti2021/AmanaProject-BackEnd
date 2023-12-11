@@ -7,18 +7,20 @@ const bcrypt = require("bcrypt");
 const Auth = require("../models/Auth");
 
 class AuthController {
+  checkLogin(req, res) {
+    return res.status(200).json({ message: "authenticated" });
+  }
   async login(req, res) {
     const { email, password } = req.body;
-
     try {
       const user = await Auth.login(email);
-
       if (!user) {
-        res.status(401).json({ error: "Invalid email or password" });
+        return res.status(401).json({ error: "Invalid email or password" });
       }
+      const result = await bcrypt.compare(password, user.pass);
 
-      if (!bcrypt.compare(password, user.pass)) {
-        res.status(401).json({ error: "Invalid email or password" });
+      if (!result) {
+        return res.status(401).json({ error: "Invalid email or password" });
       }
       const token = jwt.sign(
         { userId: user.uid, username: user.nama },
