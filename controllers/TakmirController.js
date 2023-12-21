@@ -6,10 +6,15 @@ import fs from "fs";
 
 class TakmirController {
   async getWebadmin(req, res) {
-    const validator = new Validator();
-    const mosque = await Mosque.where("user_id", req.user);
-    const takmir = await Takmir.where("mosque_id", mosque[0].id);
-    return res.status(200).json({ takmir: takmir[0], mosque: mosque[0] });
+    try {
+      const validator = new Validator();
+      const mosque = await Mosque.where("user_id", req.user);
+      const takmir = await Takmir.where("mosque_id", mosque[0].id);
+      return res.status(200).json({ takmir: takmir[0], mosque: mosque[0] });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
   async index(req, res) {
     const takmir = await Takmir.all();

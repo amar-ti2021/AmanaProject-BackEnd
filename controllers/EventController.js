@@ -26,6 +26,7 @@ class EventController {
         {
           id: nanoid(),
           mosque_id: mosque[0].id,
+          tagline: req.body.tagline,
           title: req.body.title,
           description: req.body.description,
           date: req.body.date,
@@ -33,6 +34,7 @@ class EventController {
         {
           id: [["unique", "id"]],
           mosque_id: ["required"],
+          tagline: ["required"],
           title: ["required"],
           description: ["required"],
           date: ["required", "date"],
@@ -100,11 +102,13 @@ class EventController {
         const data = await validator.validate(
           {
             title: req.body.title ?? event_data.title,
+            tagline: req.body.tagline ?? event_data.tagline,
             description: req.body.description ?? event_data.description,
             date: req.body.date ?? event_data.date,
           },
           {
             title: ["required"],
+            tagline: ["required"],
             description: ["required"],
             date: ["required", "date"],
           },

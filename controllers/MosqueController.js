@@ -183,7 +183,7 @@ class MosqueController {
     const mosqueByLocation = await Mosque.where("address", keyword);
     const unfilteredMosque = mosqueByName.concat(mosqueByLocation);
     const mosque = [
-      ...new Map(unfilteredMosque.map((m) => [m.id, m])).values(),
+      ...new Map(unfilteredMosque.map((m) => console.log[(m.id, m)])).values(),
     ];
     if (mosque) {
       const data = {
