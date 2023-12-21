@@ -1,6 +1,7 @@
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const mysql = require("mysql2/promise");
+import mysql from 'mysql2/promise';
 
 const {
   DB_HOST,
@@ -22,13 +23,14 @@ const db = mysql.createPool({
   keepAliveInitialDelay: DB_KEEP_ALIVE_INITIAL_DELAY,
 });
 
-async function query(query, value) {
+async function query(query, values) {
   try {
-    const [executeQuery] = await db.query(query, value ?? []); // hasil dari query
-    return executeQuery;
+    const [results] = await db.query(query, values ?? []);
+    return results;
   } catch (error) {
-    console.log(error);
+    console.error(`Error executing query: ${query}`, error);
+    throw new Error("Database error");
   }
 }
 
-module.exports = query;
+export default query;

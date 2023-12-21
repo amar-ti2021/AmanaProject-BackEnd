@@ -1,12 +1,14 @@
-const query = require("../config/database");
-const bcrypt = require("bcrypt");
+import Model from '../core/Model.js';
+import query from '../core/Database.js';
+import bcrypt from 'bcrypt';
 
-class Auth {
-  static async login(email) {
+class Auth extends Model {
+  static table = "users";
+
+  static async login(field, email) {
     try {
       const results = await query(
-        "SELECT uid, nama, email, pass FROM user WHERE email = ? LIMIT 1",
-        [email]
+        `SELECT id, username, email, password FROM ${Auth.table} WHERE ${field} = "${email}" LIMIT 1`
       );
 
       if (results.length === 1) {
@@ -21,4 +23,4 @@ class Auth {
   }
 }
 
-module.exports = Auth;
+export default Auth;
